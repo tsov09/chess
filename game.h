@@ -10,7 +10,7 @@ using namespace std;
 #include "game.h"
 
 class Game {
-	virtual void start() = 0;
+	virtual bool start() = 0;
 	virtual void stop() = 0;
 };
 
@@ -26,7 +26,7 @@ public:
 	Figure* m_white_knight;
 	int* m_rand_pos;
 	Chess();
-	virtual void start() override;
+	virtual bool start() override;
 	virtual void stop() override;
 private:
 	void print_figures();

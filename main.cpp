@@ -8,7 +8,7 @@ using namespace std;
 
 int main() {
 	srand(time(0));
-	Chess* chess = new Chess();
-	chess->start();
+	Chess chess;
+	chess.start();
 	return 0;
 }

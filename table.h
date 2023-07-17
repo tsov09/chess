@@ -22,9 +22,10 @@ protected:
 class Table : public Matrix {
 public:
 	Table();
+	bool line_is_free(Moving_Type, int, int, int, int);
 public:
 	int cln_vrt() override;
 	void fill();
 	void draw();
-	void set_figure(Figure*, int);
+	void set_figure(Figure*, int, int);
 };
