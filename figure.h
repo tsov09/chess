@@ -30,13 +30,20 @@ protected:
 	int m_col;
 	string m_color;
 public:
+	Figure() = default;
+	Figure(const Figure&) = delete;
+	Figure(Figure&&) = delete;
+	Figure& operator = (const Figure&) = delete;
+	Figure& operator = (Figure&&) = delete;
+	virtual ~Figure();
 	static string generate_name(string, string, string);
 	string get_name();
 	virtual Moving_Type can_move(int, int);
-	virtual void moves_list(int**, int&	);
 	bool is_valid_index(int);
 	void set_row(int);
 	void set_col(int);
+	virtual void get_moves_list(int**, int&);
+	int get_moves_size();
 	int get_row();
 	int get_col();
 
@@ -45,13 +52,23 @@ public:
 class King : public Figure {
 public:
 	King(string);
+	King(const King&) = delete;
+	King(King&&) = delete;
+	King& operator = (const King&) = delete;
+	King& operator = (King&&) = delete;
+	~King() override;
 	Moving_Type can_move(int, int);
-	void moves_list(int**, int&) override;
+	void get_moves_list(int**, int&) override;
 };
 
 class Queen : public Figure {
 public:
 	Queen(string);
+	Queen(const Queen&) = delete;
+	Queen(Queen&&) = delete;
+	Queen& operator = (const Queen&) = delete;
+	Queen& operator = (Queen&&) = delete;
+	~Queen() override;
 	Moving_Type can_move(int, int);
 
 };
@@ -59,11 +76,21 @@ public:
 class Bishop : public Figure {
 public:
 	Bishop(string);
+	Bishop(const Bishop&) = delete;
+	Bishop(Bishop&&) = delete;
+	Bishop& operator = (const Bishop&) = delete;
+	Bishop& operator = (Bishop&&) = delete;
+	~Bishop() override;
 	Moving_Type can_move(int, int);
 };
 
 class Knight : public Figure {
 public:
 	Knight(string);
+	Knight(const Knight&) = delete;
+	Knight(Knight&&) = delete;
+	Knight& operator = (const Knight&) = delete;
+	Knight& operator = (Knight&&) = delete;
+	~Knight() override;
 	Moving_Type can_move(int, int);
 };

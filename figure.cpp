@@ -4,6 +4,8 @@
 #include <string>
 using namespace std;
 
+Figure::~Figure() {};
+
 string Figure::generate_name(string type, string index, string color) {
 	return type + index + color;
 }
@@ -26,9 +28,6 @@ Moving_Type Figure::can_move(int row, int col) {
 	return type;
 }
 
-void Figure::moves_list(int** list, int&) {
-	cout << endl;
-}
 
 void Figure::set_row(int row) {
 	if (is_valid_index(row)) {
@@ -41,6 +40,11 @@ void Figure::set_col(int col) {
 	}
 }
 
+void Figure::get_moves_list(int** list, int&) {
+	cout << endl;
+}
+
+
 int Figure::get_row() {
 	return m_row;
 }
@@ -48,7 +52,6 @@ int Figure::get_row() {
 int Figure::get_col() {
 	return m_col;
 }
-
 King::King(string color) {
 	if (color == "white") {
 		m_name = Figure::generate_name("K", "_", "W");
@@ -60,6 +63,8 @@ King::King(string color) {
 		cout << "Enter white or black." << endl;
 	}
 }
+King::~King() {};
+
 Moving_Type King::can_move(int row, int col) {
 	Moving_Type type;
 	int row_diff = m_row - row;
@@ -99,17 +104,36 @@ Moving_Type King::can_move(int row, int col) {
 	return type;
 }
 
-void King::moves_list(int** list, int& size) {
-
+void King::get_moves_list(int** list, int& size) {
 	if (Figure::is_valid_index(m_col - 1)) {
 		list[size][0] = m_row;
-		list[size][1] = m_col-1;
+		list[size][1] = m_col - 1;
 		size++;
+		if (Figure::is_valid_index(m_row + 1)) {
+			list[size][0] = m_row + 1;
+			list[size][1] = m_col - 1;
+			size++;
+		}
+		if (Figure::is_valid_index(m_row - 1)) {
+			list[size][0] = m_row - 1;
+			list[size][1] = m_col - 1;
+			size++;
+		}
 	}
 	if (Figure::is_valid_index(m_col + 1)) {
 		list[size][0] = m_row;
 		list[size][1] = m_col + 1;
 		size++;
+		if (Figure::is_valid_index(m_row - 1)) {
+			list[size][0] = m_row - 1;
+			list[size][1] = m_col + 1;
+			size++;
+		}
+		if (Figure::is_valid_index(m_row + 1)) {
+			list[size][0] = m_row + 1;
+			list[size][1] = m_col + 1;
+			size++;
+		}
 	}
 	if (Figure::is_valid_index(m_row - 1)) {
 		list[size][0] = m_row - 1;
@@ -121,29 +145,9 @@ void King::moves_list(int** list, int& size) {
 		list[size][1] = m_col;
 		size++;
 	}
-	if (Figure::is_valid_index(m_row - 1) && Figure::is_valid_index(m_col - 1)) {
-		list[size][0] = m_row - 1;
-		list[size][1] = m_col - 1;
-		size++;
-	}
-	if (Figure::is_valid_index(m_row - 1) && Figure::is_valid_index(m_col + 1)) {
-		list[size][0] = m_row - 1;
-		list[size][1] = m_col + 1;
-		size++;
-	}
-	if (Figure::is_valid_index(m_row + 1) && Figure::is_valid_index(m_col + 1)) {
-		list[size][0] = m_row + 1;
-		list[size][1] = m_col + 1;
-		size++;
-	}
-	if (Figure::is_valid_index(m_row + 1) && Figure::is_valid_index(m_col - 1)) {
-		list[size][0] = m_row + 1;
-		list[size][1] = m_col - 1;
-		size++;
-	}
 }
 
-
+Queen::~Queen() {};
 Queen::Queen(string color) {
 	if (color == "white") {
 		m_name = Figure::generate_name("Q", "_", "W");
@@ -160,7 +164,6 @@ Moving_Type Queen::can_move(int row, int col) {
 	Moving_Type type;
 	int row_diff = m_row - row;
 	int col_diff = m_col - col;
-	cout << row_diff << "  " << col_diff << " diff" << m_row << " " << m_col << endl;
 	if (Figure::is_valid_index(row) && Figure::is_valid_index(col)) {
 		if (row_diff == 0 && col_diff > 0) {
 			type = left_row;
@@ -196,6 +199,7 @@ Moving_Type Queen::can_move(int row, int col) {
 	return type;
 }
 
+Bishop::~Bishop() {};
 Bishop::Bishop(string color) {
 	if (color == "white") {
 		m_name = Figure::generate_name("B", "_", "W");
@@ -235,6 +239,7 @@ Moving_Type Bishop::can_move(int row, int col) {
 	return type;
 }
 
+Knight::~Knight() {};
 Knight::Knight(string color) {
 	if (color == "white") {
 		m_name = Figure::generate_name("N", "_", "W");

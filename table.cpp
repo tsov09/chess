@@ -4,6 +4,35 @@ using namespace std;
 #include "table.h"
 #include "figure.h"
 
+
+Matrix::Matrix(int row, int column) : m_row(row), m_column(column) {
+	m_matrix = new string * [m_row];
+	for (int i = 0; i < m_row; i++) {
+		m_matrix[i] = new string[m_column];
+	}
+}
+Matrix::~Matrix() {
+	for (int i = 0; i < m_row; i++) {
+		delete [] m_matrix[i];
+		m_matrix[i] = nullptr;
+	}
+	delete[] m_matrix;
+	m_matrix = nullptr;
+}
+void Matrix::set_row(int row) {
+	if (row > 1) {
+		m_row = row;
+	}
+}
+void Matrix::set_column(int column) {
+	if (column > 1) {
+		m_column = column;
+	}
+}
+
+Table::Table() : Matrix(8, 8) {};
+Table::~Table() {};
+
 bool Table::line_is_free(Moving_Type type, int row_current, int col_current, int row_aim, int col_aim) {
 	if (m_matrix[row_current][col_current][2] == m_matrix[row_aim][col_aim][2]) {
 		return false;
@@ -90,26 +119,6 @@ bool Table::line_is_free(Moving_Type type, int row_current, int col_current, int
 	return is_free;
 
 }
-
-Matrix::Matrix(int row, int column) : m_row(row), m_column(column) {
-	m_matrix = new string * [m_row];
-	for (int i = 0; i < m_row; i++) {
-		m_matrix[i] = new string[m_column];
-	}
-}
-void Matrix::set_row(int row) {
-	if (row > 1) {
-		m_row = row;
-	}
-}
-void Matrix::set_column(int column) {
-	if (column > 1) {
-		m_column = column;
-	}
-}
-
-Table::Table() : Matrix(8, 8) {};
-
 int Table::cln_vrt() {
 	return 0;
 }
@@ -129,21 +138,26 @@ void Table::fill() {
 
 void Table::draw() {
 	cout << endl;
-	cout << "     0   1   2   3   4   5   6   7    " << endl;
+	cout << "     A   B   C   D   E   F   G   H    " << endl;
 	for (int i = 0; i < m_row; i++) {
-		cout << " " << i << "  ";
+		cout << " " << 8 - i << "  ";
 		for (int g = 0; g < m_column; g++) {
 			cout << m_matrix[i][g] << " ";
 		}
-		cout << " " << i << " ";
+		cout << " " << 8 - i << " ";
 		cout << endl;
 	}
-	cout << "     0   1   2   3   4   5   6   7    " << endl;
+	cout << "     A   B   C   D   E   F   G   H    " << endl;
 	cout << endl;
 }
 
 void Table::set_figure(Figure* figure, int row, int col) {
-	m_matrix[row][col] = figure->get_name();
-	figure->set_row(row);
-	figure->set_col(col);
+	if (m_matrix[row][col] == "   " || m_matrix[row][col] == "###") {
+		m_matrix[row][col] = figure->get_name();
+		figure->set_row(row);
+		figure->set_col(col);
+	}
+	else {
+		cout << "Position for " << figure->get_name() << " and " << m_matrix[row][col] << " are similar." << endl;
+	}
 }

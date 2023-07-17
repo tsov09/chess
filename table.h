@@ -9,6 +9,11 @@ using namespace std;
 class Matrix {
 public:
 	Matrix(int row, int column);
+	Matrix(const Matrix&) = delete;
+	Matrix(Matrix&&) = delete;
+	Matrix& operator = (const Matrix&) = delete;
+	Matrix& operator = (Matrix&&) = delete;
+	virtual ~Matrix();
 	virtual int cln_vrt() = 0;
 	virtual void set_row(int row);
 	virtual void set_column(int column);
@@ -22,6 +27,11 @@ protected:
 class Table : public Matrix {
 public:
 	Table();
+	Table(const Table&) = delete;
+	Table(Table&&) = delete;
+	Table& operator = (const Table&) = delete;
+	Table& operator = (Table&&) = delete;
+	~Table() override;
 	bool line_is_free(Moving_Type, int, int, int, int);
 public:
 	int cln_vrt() override;
