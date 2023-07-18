@@ -11,7 +11,7 @@ void play_chess() {
 	Chess* chess = new Chess();
 	chess->set_figure("Black King", "f5");
 	chess->set_figure("White King", "h5");
-	chess->set_figure("White Queen", "c3");
+	chess->set_figure("White Queen", "e3");
 	chess->set_figure("White Bishop", "g7");
 	chess->set_figure("White Knight", "d4");
 	chess->start();
