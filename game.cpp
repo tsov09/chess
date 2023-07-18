@@ -85,12 +85,11 @@ bool Chess::is_check() {
 	bool is_check = false;
 	for (int i = 0; i < m_figures_count; i++) {
 		move = m_figures[i]->can_move(black_king_row, black_king_col);
-
 		if (move != no_way) {
 			if (m_chess_table->line_is_free(move, m_figures[i]->get_row(), m_figures[i]->get_col(), black_king_row, black_king_col)) {
 				//cout << "Move in check " << move << " " << m_figures[i]->get_name() << " " << black_king_row << ", " << black_king_col << endl;
 				is_check = true;
-				//break;
+				break;
 			}
 		}
 	}
@@ -121,7 +120,7 @@ bool Chess::is_mate() {
 				move = m_figures[g]->can_move(black_king_moves[i][0], black_king_moves[i][1]);
 				if (move != no_way) {
 					if (m_chess_table->line_is_free(move, m_figures[g]->get_row(), m_figures[g]->get_col(), black_king_moves[i][0], black_king_moves[i][1])) {
-						cout << "Move in mate " << move << " " << m_figures[g]->get_name() << endl;
+						//cout << "Move in mate " << move << " " << m_figures[g]->get_name() << endl;
 						is_check_this = true;
 						break;
 					}
