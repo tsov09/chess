@@ -9,11 +9,11 @@ using namespace std;
 
 void play_chess() {
 	Chess* chess = new Chess();
-	chess->set_figure("Black King", "f5");
-	chess->set_figure("White King", "h5");
-	chess->set_figure("White Queen", "e3");
-	chess->set_figure("White Bishop", "g7");
-	chess->set_figure("White Knight", "d4");
+	chess->set_figure("Black King", "e8");
+	chess->set_figure("White King", "d6");
+	chess->set_figure("White Queen", "f5");
+	chess->set_figure("White Bishop", "h5");
+	chess->set_figure("White Knight", "b7");
 	chess->start();
 	delete chess;
 	chess = nullptr;

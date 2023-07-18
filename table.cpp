@@ -44,7 +44,6 @@ bool Table::line_is_free(Moving_Type type, int row_current, int col_current, int
 	case left_row:
 		for (int i = col_current - 1; i > col_aim; i--) {
 			if (m_matrix[row_current][i] != "   " && m_matrix[row_current][i] != "###") {
-				cout << "lr" << endl;
 				is_free = false;
 				break;
 			}

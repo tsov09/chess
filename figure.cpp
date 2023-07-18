@@ -256,7 +256,6 @@ Moving_Type Knight::can_move(int row, int col) {
 	Moving_Type type;
 	int row_diff = m_row - row;
 	int col_diff = m_col - col;
-	cout << row_diff << ", " << col_diff << endl;
 	if (Figure::is_valid_index(row) && Figure::is_valid_index(col)) {
 		if (row_diff == 1 && col_diff == 2) {
 			type = up_left_N;
