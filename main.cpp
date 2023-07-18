@@ -9,13 +9,14 @@ using namespace std;
 
 void play_chess() {
 	Chess* chess = new Chess();
-	chess->set_figure("Black King", "H8");
-	chess->set_figure("White King", "E5");
-	chess->set_figure("White Queen", "H3");
-	chess->set_figure("White Bishop", "E6");
-	chess->set_figure("White Knight", "D6");
+	chess->set_figure("Black King", "f5");
+	chess->set_figure("White King", "h5");
+	chess->set_figure("White Queen", "c3");
+	chess->set_figure("White Bishop", "g7");
+	chess->set_figure("White Knight", "d4");
 	chess->start();
 	delete chess;
+	chess = nullptr;
 }
 
 int main() {

@@ -85,7 +85,9 @@ bool Chess::is_check() {
 	bool is_check = false;
 	for (int i = 0; i < m_figures_count; i++) {
 		move = m_figures[i]->can_move(black_king_row, black_king_col);
+
 		if (move != no_way) {
+			//cout << "Move in check " << move << " " << m_figures[i]->get_name() << " " << black_king_row << ", " << black_king_col << endl;
 			if (m_chess_table->line_is_free(move, m_figures[i]->get_row(), m_figures[i]->get_col(), black_king_row, black_king_col)) {
 				is_check = true;
 				break;
@@ -106,17 +108,29 @@ bool Chess::is_mate() {
 	int black_king_moves_size = 0;
 	m_black_king->get_moves_list(black_king_moves, black_king_moves_size);
 	for (int i = 0; i < black_king_moves_size; i++) {
+		cout << black_king_moves[i][0] << " " << black_king_moves[i][1] << endl;
+	}
+	for (int g = 0; g < m_figures_count; g++) {
 		bool is_check_this = false;
-		for (int g = 0; g < m_figures_count; g++) {
-			move = m_figures[g]->can_move(black_king_moves[i][0], black_king_moves[i][1]);
-			if (move != no_way) {
-				if (m_chess_table->line_is_free(move, m_figures[g]->get_row(), m_figures[g]->get_col(), black_king_moves[i][0], black_king_moves[i][1])) {
-					is_check_this = true;
-					break;
+		bool matches = false;
+		for (int i = 0; i < black_king_moves_size; i++) {
+			if (m_figures[g]->get_row() == black_king_moves[i][0] && m_figures[g]->get_col() == black_king_moves[i][1]) {
+				matches = true;
+			}
+			else {
+				move = m_figures[g]->can_move(black_king_moves[i][0], black_king_moves[i][1]);
+				if (move != no_way) {
+					if (m_chess_table->line_is_free(move, m_figures[g]->get_row(), m_figures[g]->get_col(), black_king_moves[i][0], black_king_moves[i][1])) {
+						is_check_this = true;
+						break;
+					}
 				}
+
 			}
 		}
-		if (!is_check_this) {
+		if (!is_check_this && !matches) {
+			cout << "Move in mate " << move << " " << m_figures[g]->get_row() << ", " << m_figures[g]->get_col() << endl;
+			
 			is_mate = false;
 			break;
 		}
