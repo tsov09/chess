@@ -30,7 +30,7 @@ protected:
 	int m_col;
 	string m_color;
 public:
-	Figure() = default;
+	Figure();
 	Figure(const Figure&) = delete;
 	Figure(Figure&&) = delete;
 	Figure& operator = (const Figure&) = delete;

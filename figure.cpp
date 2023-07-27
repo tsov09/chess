@@ -5,7 +5,7 @@
 using namespace std;
 
 Figure::~Figure() {};
-
+Figure::Figure() : m_row(-1), m_col(-1) {};
 string Figure::generate_name(string type, string index, string color) {
 	return type + index + color;
 }

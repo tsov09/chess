@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <time.h>	
 using namespace std;
 
@@ -8,18 +10,22 @@ using namespace std;
 
 
 void play_chess() {
+	ifstream infile("positions.txt");
+
 	Chess* chess = new Chess();
-	chess->set_figure("Black King", "e8");
-	chess->set_figure("White King", "d6");
-	chess->set_figure("White Queen", "f5");
-	chess->set_figure("White Bishop", "h5");
-	chess->set_figure("White Knight", "b7");
+
+	std::string line;
+	while (std::getline(infile, line))
+	{
+		chess->set_figure(line.substr(0, line.size() - 3), line.substr(line.size() - 2, line.size()));
+	}
 	chess->start();
 	delete chess;
 	chess = nullptr;
 }
 
 int main() {
+
 	srand(time(0));
 	play_chess();
 	return 0;

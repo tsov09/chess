@@ -56,7 +56,7 @@ void Chess::start() {
 	if (is_possible_game()) {
 		if (is_check()) {
 			if (is_mate()) {
-				cout << "Checkmate" << endl;
+				cout << "Check and mate" << endl;
 			}
 			else {
 				cout << "Check" << endl;
@@ -168,8 +168,10 @@ void Chess::get_coordinates(string pos, int& row, int& col) {
 		col = 7;
 		break;
 	default:
+		cout << "Position is invalid" << endl;
 		break;
 	}
+
 	row = 8 - (pos[1] - '0');
 }
 
@@ -178,6 +180,14 @@ bool Chess::is_possible_game() {
 	int diff_row = m_black_king->get_row() - m_white_king->get_row();
 	int diff_col = m_black_king->get_col() - m_white_king->get_col();
 
+	if (m_black_king->get_row() == -1 || m_black_king->get_col() == -1) {
+		cout << "Black king is absent" << endl;
+		can_set = false;
+	}
+	if (m_white_king->get_row() == -1 || m_white_king->get_col() == -1) {
+		cout << "White king is absent" << endl;
+		can_set = false;
+	}
 	if (diff_row == 0 || diff_row == 1 || diff_row == -1) {
 		if (diff_col == 0 || diff_col == 1 || diff_col == -1) {
 			can_set = false;
@@ -209,6 +219,9 @@ void Chess::set_figure(string figure_name, string position) {
 		else {
 			cout << "Figure not found" << endl;
 		}
+	}
+	else {
+		cout << endl << "Invalid position for " << figure_name << "!" << endl;
 	}
 }
 
