@@ -1,5 +1,6 @@
 #include "game.h"
 
+
 Game::~Game() {};
 
 bool Chess::is_valid_ind(int x) {
@@ -17,7 +18,6 @@ Chess::Chess() : m_figures_count(4) {
 	m_chess_table = new Table();
 	m_chess_table->fill();
 	m_black_king = new King("black");
-	//m_figures[next++] = m_black_king;
 	m_white_king = new King("white");
 	m_figures[next++] = m_white_king;
 	m_white_queen = new Queen("white");
@@ -48,41 +48,157 @@ Chess::~Chess() {
 	delete m_white_knight;
 	m_white_knight = nullptr;
 }
+void Chess::set_figure(string figure_name, string position) {
+	int row;
+	int col;
+	get_coordinates(position, row, col);
+	if (Chess::is_valid_ind(row) && Chess::is_valid_ind(col)) {
+		if (figure_name == "Black King") {
+			m_chess_table->set_figure(m_black_king, row, col);
+		}
+		else if (figure_name == "White King") {
+			m_chess_table->set_figure(m_white_king, row, col);
+		}
+		else if (figure_name == "White Queen") {
+			m_chess_table->set_figure(m_white_queen, row, col);
+		}
+		else if (figure_name == "White Bishop") {
+			m_chess_table->set_figure(m_white_bishop, row, col);
+		}
+		else if (figure_name == "White Knight") {
+			m_chess_table->set_figure(m_white_knight, row, col);
+		}
+		else {
+			cout << "Figure not found" << endl;
+		}
+	}
+	else {
+		cout << endl << "Invalid position for " << figure_name << "!" << endl;
+	}
+}
 
 void Chess::start() {
 	//set_random_pos();
 	//set_figures();
+	//is_check_and_mate();
 	m_chess_table->draw();
-	if (is_possible_game()) {
-		if (is_check()) {
-			if (is_mate()) {
-				cout << "Check and mate" << endl;
-			}
-			else {
-				cout << "Check" << endl;
-			}
-		}
-		else {
-			cout << "Not check" << endl;
-		}
+	if (!is_check()) {
+		is_check_and_mate_after_whites_move();
 	}
 	else {
-		cout << "Impossible game." << endl;
+		cout << "Whites already won." << endl;
 	}
-};
+}
 void Chess::stop() {
 	cout << endl;
-};
+}
 void Chess::print_figures() {
 	for (int i = 0; i < m_figures_count; i++) {
 		m_figures[i]->get_name();
 	}
 }
+
+bool Chess::is_check_and_mate() {
+	bool check_and_mate = false;
+	if (is_possible_game()) {
+		if (is_check()) {
+			if (is_mate()) {
+				//cout << "Check and mate" << endl;
+				check_and_mate = true;
+			}
+			/*else {
+				cout << "Check" << endl;
+			}*/
+		}
+		/*else {
+			cout << "Not check" << endl;
+		}*/
+	}
+	/*else {
+		cout << "Impossible game." << endl;
+	}*/
+	return check_and_mate;
+}
+void Chess::is_check_and_mate_after_whites_move() {
+	m_white_queen->fill_moves_list();
+	m_white_bishop->fill_moves_list();
+	m_white_knight->fill_moves_list();
+	vector<Position> white_queen_moves = m_white_queen->get_moves_list();
+	vector<Position> white_bishop_moves = m_white_bishop->get_moves_list();
+	vector<Position> white_knight_moves = m_white_knight->get_moves_list();
+
+	cout << "Whites can win in case of this move(s): ";
+
+	int saved_row = m_white_queen->get_row();
+	int saved_col = m_white_queen->get_col();
+	bool exists = false;
+
+	m_chess_table->empty_cell(m_white_queen->get_row(), m_white_queen->get_col());
+	for (int i = 0; i < white_queen_moves.size(); i++) {
+		if (m_chess_table->set_figure(m_white_queen, white_queen_moves[i].row, white_queen_moves[i].col)) {
+			if (is_check_and_mate()) {
+				exists = true;
+				cout << "White Queen " + get_position(white_queen_moves[i].row, white_queen_moves[i].col);
+				//is_check_and_mate();
+				//m_chess_table->draw();
+			}
+			m_chess_table->empty_cell(m_white_queen->get_row(), m_white_queen->get_col());
+		}
+	}
+	m_chess_table->empty_cell(m_white_queen->get_row(), m_white_queen->get_col());
+	m_white_queen->set_row(saved_row);
+	m_white_queen->set_col(saved_col);
+	m_chess_table->set_figure(m_white_queen, saved_row, saved_col);
+
+
+	saved_row = m_white_bishop->get_row();
+	saved_col = m_white_bishop->get_col();
+	m_chess_table->empty_cell(m_white_bishop->get_row(), m_white_bishop->get_col());
+	for (int i = 0; i < white_bishop_moves.size(); i++) {
+		if (m_chess_table->set_figure(m_white_bishop, white_bishop_moves[i].row, white_bishop_moves[i].col)) {
+			if (is_check_and_mate()) {
+				exists = true;
+				cout << "White Qishop " + get_position(white_bishop_moves[i].row, white_bishop_moves[i].col);
+				//is_check_and_mate();
+				//m_chess_table->draw();
+			};
+			m_chess_table->empty_cell(m_white_bishop->get_row(), m_white_bishop->get_col());
+		}
+	}
+	m_chess_table->empty_cell(m_white_bishop->get_row(), m_white_bishop->get_col());
+	m_white_bishop->set_row(saved_row);
+	m_white_bishop->set_col(saved_col);
+	m_chess_table->set_figure(m_white_bishop, saved_row, saved_col);
+
+
+	saved_row = m_white_knight->get_row();
+	saved_col = m_white_knight->get_col();
+	m_chess_table->empty_cell(m_white_knight->get_row(), m_white_knight->get_col());
+	for (int i = 0; i < white_knight_moves.size(); i++) {
+		if (m_chess_table->set_figure(m_white_knight, white_knight_moves[i].row, white_knight_moves[i].col)) {
+			if (is_check_and_mate()) {
+				exists = true;
+				cout << "White Knight " + get_position(white_knight_moves[i].row, white_knight_moves[i].col);
+				//is_check_and_mate();
+				//m_chess_table->draw();
+			};
+			m_chess_table->empty_cell(m_white_knight->get_row(), m_white_knight->get_col());
+		};
+	}
+	m_chess_table->empty_cell(m_white_knight->get_row(), m_white_knight->get_col());
+	m_white_knight->set_row(saved_row);
+	m_white_knight->set_col(saved_col);
+	m_chess_table->set_figure(m_white_knight, saved_row, saved_col);
+
+	if (!exists) {
+		cout << "No move." << endl;
+	}
+}
 bool Chess::is_check() {
+	bool is_check = false;
 	int black_king_row = m_black_king->get_row();
 	int black_king_col = m_black_king->get_col();
 	Moving_Type move;
-	bool is_check = false;
 	for (int i = 0; i < m_figures_count; i++) {
 		move = m_figures[i]->can_move(black_king_row, black_king_col);
 		if (move != no_way) {
@@ -93,49 +209,31 @@ bool Chess::is_check() {
 		}
 	}
 	return is_check;
-
 }
 
 bool Chess::is_mate() {
-	Moving_Type move;
 	bool is_mate = true;
-	int** black_king_moves = new int* [8];
-	for (int i = 0; i < 8; i++) {
-		black_king_moves[i] = new int[2];
-	}
-	int black_king_moves_size = 0;
-	m_black_king->get_moves_list(black_king_moves, black_king_moves_size);
-	for (int i = 0; i < black_king_moves_size; i++) {
+	Moving_Type move;
+	m_black_king->fill_moves_list();
+	vector<Position> black_king_moves = m_black_king->get_moves_list();
+	for (int i = 0; i < black_king_moves.size(); i++) {
 		bool is_check_this = false;
 		bool matches = false;
 		for (int g = 0; g < m_figures_count; g++) {
-			if (m_figures[g]->get_row() == black_king_moves[i][0] && m_figures[g]->get_col() == black_king_moves[i][1]) {
-				matches = true;
-			}
-			else {
-				move = m_figures[g]->can_move(black_king_moves[i][0], black_king_moves[i][1]);
-				if (move != no_way) {
-					if (m_chess_table->line_is_free(move, m_figures[g]->get_row(), m_figures[g]->get_col(), black_king_moves[i][0], black_king_moves[i][1])) {
-						is_check_this = true;
-						break;
-					}
+			move = m_figures[g]->can_move(black_king_moves[i].row, black_king_moves[i].col);
+			if (move != no_way) {
+				if (m_chess_table->line_is_free(move, m_figures[g]->get_row(), m_figures[g]->get_col(), black_king_moves[i].row, black_king_moves[i].col)) {
+					//cout << m_figures[g]->get_name() << " " << move << endl;
+					is_check_this = true;
+					break;
 				}
-
 			}
 		}
-		if (!is_check_this && !matches) {
+		if (!is_check_this) {
 			is_mate = false;
 			break;
 		}
 	}
-
-	for (int i = 0; i < 8; i++) {
-		delete [] black_king_moves[i];
-		black_king_moves[i] = nullptr;
-	}
-	delete[] black_king_moves;
-	black_king_moves = nullptr;
-
 	return is_mate;
 }
 
@@ -175,6 +273,46 @@ void Chess::get_coordinates(string pos, int& row, int& col) {
 	row = 8 - (pos[1] - '0');
 }
 
+string Chess::get_position(int row, int col) {
+	string pos;
+	cout << pos << endl;
+
+	switch (col)
+	{
+	case 0:
+		pos += 'A';
+		break;
+	case 1:
+		pos += 'B';
+		break;
+	case 2:
+		pos += 'C';
+		break;
+	case 3:
+		pos += 'D';
+		break;
+	case 4:
+		pos += 'E';
+		break;
+	case 5:
+		pos += 'F';
+		break;
+	case 6:
+		pos += 'G';
+		break;
+	case 7:
+		pos += 'H';
+		break;
+	default:
+		cout << "Position is invalid" << endl;
+		break;
+	}
+
+	row = (8 - row) + '0';
+	pos += row;
+	return pos;
+}
+
 bool Chess::is_possible_game() {
 	int can_set = true;
 	int diff_row = m_black_king->get_row() - m_white_king->get_row();
@@ -196,34 +334,7 @@ bool Chess::is_possible_game() {
 	return can_set;
 }
 
-void Chess::set_figure(string figure_name, string position) {
-	int row;
-	int col;
-	get_coordinates(position, row, col);
-	if (Chess::is_valid_ind(row) && Chess::is_valid_ind(col)) {
-		if (figure_name == "Black King") {
-			m_chess_table->set_figure(m_black_king, row, col);
-		}
-		else if (figure_name == "White King") {
-			m_chess_table->set_figure(m_white_king, row, col);
-		}
-		else if (figure_name == "White Queen") {
-			m_chess_table->set_figure(m_white_queen, row, col);
-		}
-		else if (figure_name == "White Bishop") {
-			m_chess_table->set_figure(m_white_bishop, row, col);
-		}
-		else if (figure_name == "White Knight") {
-			m_chess_table->set_figure(m_white_knight, row, col);
-		}
-		else {
-			cout << "Figure not found" << endl;
-		}
-	}
-	else {
-		cout << endl << "Invalid position for " << figure_name << "!" << endl;
-	}
-}
+
 
 //void Chess::set_figures() {
 //	set_figure("Black King", "H8");

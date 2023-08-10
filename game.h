@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <vector>
+
 using namespace std;
 
 #include "figure.h"
@@ -49,6 +51,9 @@ private:
 	//void set_random_pos();
 	//void set_figures();
 	void get_coordinates(string, int&, int&);
+	string get_position(int, int);
+	bool is_check_and_mate();
+	void is_check_and_mate_after_whites_move();
 	bool is_check();
 	bool is_mate();
 	bool is_possible_game();

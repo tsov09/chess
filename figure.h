@@ -1,7 +1,13 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
+
+struct Position {
+	int row;
+	int col;
+};
 
 enum Moving_Type {
 	left_row,      // left straight
@@ -26,9 +32,11 @@ enum Moving_Type {
 class Figure {
 protected:
 	string m_name;
+	string m_color;
 	int m_row;
 	int m_col;
-	string m_color;
+	//Position m_position;
+	vector<Position> m_moves_list;
 public:
 	Figure();
 	Figure(const Figure&) = delete;
@@ -42,11 +50,13 @@ public:
 	bool is_valid_index(int);
 	void set_row(int);
 	void set_col(int);
-	virtual void get_moves_list(int**, int&);
+	//void set_position(int int);
+	//virtual void get_moves_list(int**, int&);
+	virtual void fill_moves_list();
+	vector<Position> get_moves_list();
 	int get_moves_size();
 	int get_row();
 	int get_col();
-
 };
 
 class King : public Figure {
@@ -58,7 +68,9 @@ public:
 	King& operator = (King&&) = delete;
 	~King() override;
 	Moving_Type can_move(int, int);
-	void get_moves_list(int**, int&) override;
+	//void get_moves_list(int**, int&) override;
+	void fill_moves_list() override;
+	//vector<int*> get_moves_list() override;
 };
 
 class Queen : public Figure {
@@ -70,7 +82,8 @@ public:
 	Queen& operator = (Queen&&) = delete;
 	~Queen() override;
 	Moving_Type can_move(int, int);
-
+	void fill_moves_list() override;
+	//vector<int*> get_moves_list() override;
 };
 
 class Bishop : public Figure {
@@ -82,6 +95,8 @@ public:
 	Bishop& operator = (Bishop&&) = delete;
 	~Bishop() override;
 	Moving_Type can_move(int, int);
+	void fill_moves_list() override;
+	//vector<int*> get_moves_list() override;
 };
 
 class Knight : public Figure {
@@ -93,4 +108,6 @@ public:
 	Knight& operator = (Knight&&) = delete;
 	~Knight() override;
 	Moving_Type can_move(int, int);
+	void fill_moves_list() override;
+	//vector<int*> get_moves_list() override;
 };

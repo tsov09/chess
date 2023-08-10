@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
+
 using namespace std;
 
 #include "figure.h"
@@ -37,5 +39,6 @@ public:
 	int cln_vrt() override;
 	void fill();
 	void draw();
-	void set_figure(Figure*, int, int);
+	bool set_figure(Figure*, int, int);
+	void empty_cell(int, int);
 };

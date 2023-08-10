@@ -25,7 +25,6 @@ void play_chess() {
 }
 
 int main() {
-
 	srand(time(0));
 	play_chess();
 	return 0;

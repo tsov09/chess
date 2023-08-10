@@ -34,9 +34,9 @@ Table::Table() : Matrix(8, 8) {};
 Table::~Table() {};
 
 bool Table::line_is_free(Moving_Type type, int row_current, int col_current, int row_aim, int col_aim) {
-	if (m_matrix[row_current][col_current][2] == m_matrix[row_aim][col_aim][2]) {
+	/*if (m_matrix[row_current][col_current][2] == m_matrix[row_aim][col_aim][2]) {
 		return false;
-	}
+	}*/
 	bool is_free = true;
 
 	switch (type)
@@ -150,13 +150,24 @@ void Table::draw() {
 	cout << endl;
 }
 
-void Table::set_figure(Figure* figure, int row, int col) {
+bool Table::set_figure(Figure* figure, int row, int col) {
 	if (m_matrix[row][col] == "   " || m_matrix[row][col] == "###") {
 		m_matrix[row][col] = figure->get_name();
 		figure->set_row(row);
 		figure->set_col(col);
+		return true;
 	}
 	else {
-		cout << "Position for " << figure->get_name() << " and " << m_matrix[row][col] << " are similar." << endl;
+		//cout << "Position for " << figure->get_name() << " and " << m_matrix[row][col] << " are similar." << endl;
+		return false;
+	}
+}
+
+void Table::empty_cell(int row, int col) {
+	if ((row + col) % 2 == 0) {
+		m_matrix[row][col] = "###";
+	}
+	else {
+		m_matrix[row][col] = "   ";
 	}
 }
