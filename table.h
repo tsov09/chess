@@ -41,4 +41,5 @@ public:
 	void draw();
 	bool set_figure(Figure*, int, int);
 	void empty_cell(int, int);
+	bool cell_is_available(int, int, int, int);
 };

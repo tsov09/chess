@@ -33,10 +33,15 @@ void Matrix::set_column(int column) {
 Table::Table() : Matrix(8, 8) {};
 Table::~Table() {};
 
-bool Table::line_is_free(Moving_Type type, int row_current, int col_current, int row_aim, int col_aim) {
-	/*if (m_matrix[row_current][col_current][2] == m_matrix[row_aim][col_aim][2]) {
+bool Table::cell_is_available(int row_current, int col_current, int row_aim, int col_aim) {
+	if (m_matrix[row_current][col_current][2] == m_matrix[row_aim][col_aim][2]) {
 		return false;
-	}*/
+	}
+	else {
+		return true;
+	}
+};
+bool Table::line_is_free(Moving_Type type, int row_current, int col_current, int row_aim, int col_aim) {
 	bool is_free = true;
 
 	switch (type)
@@ -74,7 +79,7 @@ bool Table::line_is_free(Moving_Type type, int row_current, int col_current, int
 		}
 		break;
 	case up_left:
-		for (int i = 1; i > row_current - row_aim; i++) {
+		for (int i = 1; i < row_current - row_aim; i++) {
 			if (m_matrix[row_current - i][col_current - i] != "   " && m_matrix[row_current - i][col_current - i] != "###") {
 				is_free = false;
 				break;
@@ -114,6 +119,9 @@ bool Table::line_is_free(Moving_Type type, int row_current, int col_current, int
 	default:
 		break;
 	}
+
+	/*if (is_free) {
+	}*/
 
 	return is_free;
 

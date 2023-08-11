@@ -73,6 +73,7 @@ Moving_Type King::can_move(int row, int col) {
 	Moving_Type type;
 	int row_diff = m_row - row;
 	int col_diff = m_col - col;
+
 	if (row_diff == 0 && col_diff == 0) {
 		return no_way;
 	}

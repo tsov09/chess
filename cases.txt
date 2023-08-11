@@ -1,0 +1,135 @@
+No move -> 
+
+Black King F7
+White King E5
+White Queen C5
+White Bishop G4
+White Knight C7
+
+
+Won ->
+
+Black King E8
+White King D6
+White Queen F5
+White Bishop H5
+White Knight G5
+
+
+White Knight E3->
+
+Black King C4
+White King C2
+White Queen B6
+White Bishop F6
+White Knight G4
+
+
+White Queen D6, E7, C8->
+
+Black King D8
+White King F7
+White Queen C5
+White Bishop F5
+White Knight B6
+
+
+No move -> 
+
+Black King D8
+White King F6
+White Queen C5
+White Bishop D6
+White Knight G6
+
+
+White Queen B6, A5, C8->
+White Knight B7->
+
+Black King D8
+White King E6
+White Queen C5
+White Bishop G6
+White Knight D6
+
+
+White King E6->
+White Queen C8->
+
+Black King D8
+White King F6
+White Queen C5
+White Bishop G5
+White Knight D6
+
+
+White King E6->
+White Queen C8->
+
+
+Black King D8
+White King F7
+White Queen C5
+White Bishop H6
+White Knight D6
+
+
+White Queen C8->
+White Bishop G5->
+White Knight B7->
+
+Black King D8
+White King F7
+White Queen C6
+White Bishop H6
+White Knight D6
+
+
+Black King E6, E5, G6, G7, F7, F5->
+White Queen C8->
+White Knight B7, F7->
+
+Black King D8
+White King F6
+White Queen C6
+White Bishop G5
+White Knight D6
+
+
+White Queen C8->
+White Knight B7->
+White Bishop G5->
+
+Black King D8
+White King F7
+White Queen C6
+White Bishop F4
+White Knight D6
+
+White Queen E5->
+White Knight E7, 47->
+
+Black King F5
+White King H5
+White Queen E3
+White Bishop G7
+White Knight C6
+
+
+White Queen C5->
+White Knight E3->
+
+Black King C4
+White King C2
+White Queen B6
+White Bishop D4
+White Knight G4
+
+
+White Knight D6->
+
+Black King B7
+White King B5
+White Queen D8
+White Bishop D4
+White Knight F7

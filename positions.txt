@@ -1,5 +1,5 @@
-Black King E8
-White King D6
-White Queen F5
-White Bishop H6
-White Knight G5
+Black King B7
+White King B5
+White Queen D8
+White Bishop D4
+White Knight F7
