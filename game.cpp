@@ -84,7 +84,9 @@ void Chess::start() {
 	if (is_possible_game()) {
 		m_chess_table->draw();
 		if (!is_check()) {
-			is_check_and_mate_after_whites_move();
+			//is_check_and_mate_after_whites_move();
+			is_check_and_mate_after_whites_move_twice();
+
 		}
 		else {
 			cout << "Whites already won." << endl;
@@ -124,24 +126,19 @@ bool Chess::is_check_and_mate() {
 	}*/
 	return check_and_mate;
 }
-void Chess::is_check_and_mate_after_whites_move() {
-	m_white_king->fill_moves_list();
-	m_white_queen->fill_moves_list();
-	m_white_bishop->fill_moves_list();
-	m_white_knight->fill_moves_list();
+void Chess::is_check_and_mate_after_whites_move_twice() {
+	vector<Position> black_king_moves = m_black_king->get_moves_list(); //remove this
 	vector<Position> white_king_moves = m_white_king->get_moves_list();
 	vector<Position> white_queen_moves = m_white_queen->get_moves_list();
 	vector<Position> white_bishop_moves = m_white_bishop->get_moves_list();
 	vector<Position> white_knight_moves = m_white_knight->get_moves_list();
 
-	cout << "Whites can win in case of moving: ";
-
-	
 	bool exists = false;
 	Moving_Type move;
 
 	int saved_row = m_white_king->get_row();
 	int saved_col = m_white_king->get_col();
+
 
 	for (int i = 0; i < white_king_moves.size(); i++) {
 		move = m_white_king->can_move(white_king_moves[i].row, white_king_moves[i].col);
@@ -150,11 +147,28 @@ void Chess::is_check_and_mate_after_whites_move() {
 				&& m_chess_table->cell_is_available(saved_row, saved_col, white_king_moves[i].row, white_king_moves[i].col)) {
 				if (m_chess_table->set_figure(m_white_king, white_king_moves[i].row, white_king_moves[i].col)) {
 					m_chess_table->empty_cell(saved_row, saved_col);
-						if (is_check_and_mate()) {
-						exists = true;
-						cout << "White King " + get_position(white_king_moves[i].row, white_king_moves[i].col);
-						//is_check_and_mate();
-						//m_chess_table->draw();
+					if (!is_check_and_mate()) {
+						//here black king must move, then call is_check_and_mate_after_whites_move();
+						int saved_black_king_row = m_black_king->get_row();
+						int saved_black_king_col = m_black_king->get_col();
+						if (!is_mate()) {
+							for (int g = 0; g < black_king_moves.size(); g++) {
+								m_chess_table->empty_cell(m_black_king->get_row(), m_black_king->get_col());
+								m_chess_table->set_figure(m_black_king, black_king_moves[g].row, black_king_moves[g].col);
+								if (!is_check()) {
+									m_twice_move_mate_combinations.push_back("White King " + get_position(white_king_moves[i].row, white_king_moves[i].col) + "\n" + "Black King " + get_position(black_king_moves[g].row, black_king_moves[g].col) + "\n");
+									is_check_and_mate_after_whites_move();
+									/*if (is_check_and_mate_after_whites_move()) {
+										cout << "1. White King " + get_position(white_king_moves[i].row, white_king_moves[i].col);
+										cout << "2. Black King " + get_position(black_king_moves[g].row, black_king_moves[g].col);
+										cout << endl << "------------------------------------------" << endl;
+									};*/
+								}
+							}
+							m_chess_table->empty_cell(m_black_king->get_row(), m_black_king->get_col());
+							m_chess_table->set_figure(m_black_king, saved_black_king_row, saved_black_king_col);
+							exists = true;
+						}
 					}
 					m_chess_table->empty_cell(m_white_king->get_row(), m_white_king->get_col());
 					m_white_king->set_row(saved_row);
@@ -178,9 +192,211 @@ void Chess::is_check_and_mate_after_whites_move() {
 				&& m_chess_table->cell_is_available(saved_row, saved_col, white_queen_moves[i].row, white_queen_moves[i].col)) {
 				if (m_chess_table->set_figure(m_white_queen, white_queen_moves[i].row, white_queen_moves[i].col)) {
 					m_chess_table->empty_cell(saved_row, saved_col);
+					if (!is_check_and_mate()) {
+						//here black king must move, then call is_check_and_mate_after_whites_move();
+						int saved_black_king_row = m_black_king->get_row();
+						int saved_black_king_col = m_black_king->get_col();
+						if (!is_mate()) {
+							for (int g = 0; g < black_king_moves.size(); g++) {
+								m_chess_table->empty_cell(m_black_king->get_row(), m_black_king->get_col());
+								m_chess_table->set_figure(m_black_king, black_king_moves[g].row, black_king_moves[g].col);
+								if (!is_check()) {
+									m_twice_move_mate_combinations.push_back("White Queen " + get_position(white_queen_moves[i].row, white_queen_moves[i].col) + "\n" + "Black King " + get_position(black_king_moves[g].row, black_king_moves[g].col) + "\n");
+									is_check_and_mate_after_whites_move();
+									/*if (is_check_and_mate_after_whites_move()) {
+										cout << "1. White Queen " + get_position(white_queen_moves[i].row, white_queen_moves[i].col);
+										cout << "2. Black King " + get_position(black_king_moves[g].row, black_king_moves[g].col);
+										cout << endl << "------------------------------------------" << endl;
+									};*/
+								}
+								m_chess_table->empty_cell(black_king_moves[g].row, black_king_moves[g].col);
+							}
+							m_chess_table->empty_cell(m_black_king->get_row(), m_black_king->get_col());
+							m_chess_table->set_figure(m_black_king, saved_black_king_row, saved_black_king_col);
+							exists = true;
+						}
+					}
+					m_chess_table->empty_cell(m_white_queen->get_row(), m_white_queen->get_col());
+					m_white_queen->set_row(saved_row);
+					m_white_queen->set_col(saved_col);
+					m_chess_table->set_figure(m_white_queen, saved_row, saved_col);
+				}
+			}
+		}
+	}
+	m_chess_table->empty_cell(m_white_queen->get_row(), m_white_queen->get_col());
+	m_white_queen->set_row(saved_row);
+	m_white_queen->set_col(saved_col);
+	m_chess_table->set_figure(m_white_queen, saved_row, saved_col);
+
+	saved_row = m_white_bishop->get_row();
+	saved_col = m_white_bishop->get_col();
+	for (int i = 0; i < white_bishop_moves.size(); i++) {
+		move = m_white_bishop->can_move(white_bishop_moves[i].row, white_bishop_moves[i].col);
+		if (move != no_way) {
+			if (m_chess_table->line_is_free(move, saved_row, saved_col, white_bishop_moves[i].row, white_bishop_moves[i].col)
+				&& m_chess_table->cell_is_available(saved_row, saved_col, white_bishop_moves[i].row, white_bishop_moves[i].col)) {
+				if (m_chess_table->set_figure(m_white_bishop, white_bishop_moves[i].row, white_bishop_moves[i].col)) {
+					m_chess_table->empty_cell(saved_row, saved_col);
+					if (!is_check_and_mate()) {
+						//here black king must move, then call is_check_and_mate_after_whites_move();
+						int saved_black_king_row = m_black_king->get_row();
+						int saved_black_king_col = m_black_king->get_col();
+						if (!is_mate()) {
+							for (int g = 0; g < black_king_moves.size(); g++) {
+								m_chess_table->empty_cell(m_black_king->get_row(), m_black_king->get_col());
+								m_chess_table->set_figure(m_black_king, black_king_moves[g].row, black_king_moves[g].col);
+								if (!is_check()) {
+									m_twice_move_mate_combinations.push_back("White Bishop " + get_position(white_bishop_moves[i].row, white_bishop_moves[i].col) + "\n" + "Black King " + get_position(black_king_moves[g].row, black_king_moves[g].col) + "\n");
+									is_check_and_mate_after_whites_move();
+									/*if (is_check_and_mate_after_whites_move()) {
+										cout << "1. White Bishop " + get_position(white_bishop_moves[i].row, white_bishop_moves[i].col);
+										cout << "2. Black King " + get_position(black_king_moves[g].row, black_king_moves[g].col);
+										cout << endl << "------------------------------------------" << endl;
+									};*/
+								}
+								m_chess_table->empty_cell(black_king_moves[g].row, black_king_moves[g].col);
+							}
+							m_chess_table->empty_cell(m_black_king->get_row(), m_black_king->get_col());
+							m_chess_table->set_figure(m_black_king, saved_black_king_row, saved_black_king_col);
+							exists = true;
+						}
+					}
+					m_chess_table->empty_cell(m_white_bishop->get_row(), m_white_bishop->get_col());
+					m_white_bishop->set_row(saved_row);
+					m_white_bishop->set_col(saved_col);
+					m_chess_table->set_figure(m_white_bishop, saved_row, saved_col);
+				}
+			}
+		}
+	}
+	m_chess_table->empty_cell(m_white_bishop->get_row(), m_white_bishop->get_col());
+	m_white_bishop->set_row(saved_row);
+	m_white_bishop->set_col(saved_col);
+	m_chess_table->set_figure(m_white_bishop, saved_row, saved_col);
+
+	saved_row = m_white_knight->get_row();
+	saved_col = m_white_knight->get_col();
+	for (int i = 0; i < white_knight_moves.size(); i++) {
+		move = m_white_knight->can_move(white_knight_moves[i].row, white_knight_moves[i].col);
+		if (move != no_way) {
+			if (m_chess_table->line_is_free(move, saved_row, saved_col, white_knight_moves[i].row, white_knight_moves[i].col)
+				&& m_chess_table->cell_is_available(saved_row, saved_col, white_knight_moves[i].row, white_knight_moves[i].col)) {
+				if (m_chess_table->set_figure(m_white_knight, white_knight_moves[i].row, white_knight_moves[i].col)) {
+					m_chess_table->empty_cell(saved_row, saved_col);
+					if (!is_check_and_mate()) {
+						//here black king must move, then call is_check_and_mate_after_whites_move();
+						int saved_black_king_row = m_black_king->get_row();
+						int saved_black_king_col = m_black_king->get_col();
+						if (!is_mate()) {
+							for (int g = 0; g < black_king_moves.size(); g++) {
+								m_chess_table->empty_cell(m_black_king->get_row(), m_black_king->get_col());
+								m_chess_table->set_figure(m_black_king, black_king_moves[g].row, black_king_moves[g].col);
+								if (!is_check()) {
+									m_twice_move_mate_combinations.push_back("White Knight " + get_position(white_knight_moves[i].row, white_knight_moves[i].col) + "\n" + "Black King " + get_position(black_king_moves[g].row, black_king_moves[g].col) + "\n");
+									is_check_and_mate_after_whites_move();
+								/*	if (is_check_and_mate_after_whites_move()) {
+										cout << "1. White Knight " + get_position(white_knight_moves[i].row, white_knight_moves[i].col);
+										cout << "2. Black King " + get_position(black_king_moves[g].row, black_king_moves[g].col);
+										cout << endl << "------------------------------------------" << endl;
+									};*/
+								}
+								m_chess_table->empty_cell(black_king_moves[g].row, black_king_moves[g].col);
+							}
+							m_chess_table->empty_cell(m_black_king->get_row(), m_black_king->get_col());
+							m_chess_table->set_figure(m_black_king, saved_black_king_row, saved_black_king_col);
+							exists = true;
+						}
+					}
+					m_chess_table->empty_cell(m_white_knight->get_row(), m_white_knight->get_col());
+					m_white_knight->set_row(saved_row);
+					m_white_knight->set_col(saved_col);
+					m_chess_table->set_figure(m_white_knight, saved_row, saved_col);
+				}
+			}
+		}
+	}
+	m_chess_table->empty_cell(m_white_knight->get_row(), m_white_knight->get_col());
+	m_white_knight->set_row(saved_row);
+	m_white_knight->set_col(saved_col);
+	m_chess_table->set_figure(m_white_knight, saved_row, saved_col);
+
+	cout << "Mate combinations: " << endl << endl;
+	if (m_twice_move_mate_combinations.size()) {
+		for (auto iter: m_twice_move_mate_combinations) {
+			cout << iter << endl << endl;
+		}
+	}
+	else {
+		cout << "No way.";
+	}
+
+}
+
+
+bool Chess::is_check_and_mate_after_whites_move() {
+	/*m_white_king->fill_moves_list();
+	m_white_queen->fill_moves_list();
+	m_white_bishop->fill_moves_list();
+	m_white_knight->fill_moves_list();*/
+
+	//vector<Position> black_king_moves = m_black_king->get_moves_list(); //remove this
+	vector<Position> white_king_moves = m_white_king->get_moves_list();
+	vector<Position> white_queen_moves = m_white_queen->get_moves_list();
+	vector<Position> white_bishop_moves = m_white_bishop->get_moves_list();
+	vector<Position> white_knight_moves = m_white_knight->get_moves_list();
+
+
+	//cout << "Whites can win in case of moving: ";
+
+	
+	bool exists = false;
+	Moving_Type move;
+
+	int saved_row = m_white_king->get_row();
+	int saved_col = m_white_king->get_col();
+
+	for (int i = 0; i < white_king_moves.size(); i++) {
+		move = m_white_king->can_move(white_king_moves[i].row, white_king_moves[i].col);
+		if (move != no_way) {
+			if (m_chess_table->line_is_free(move, saved_row, saved_col, white_king_moves[i].row, white_king_moves[i].col)
+				&& m_chess_table->cell_is_available(saved_row, saved_col, white_king_moves[i].row, white_king_moves[i].col)) {
+				if (m_chess_table->set_figure(m_white_king, white_king_moves[i].row, white_king_moves[i].col)) {
+					m_chess_table->empty_cell(saved_row, saved_col);
+						if (is_check_and_mate()) {
+						exists = true;
+						m_twice_move_mate_combinations[m_twice_move_mate_combinations.size() - 1] += ("White King " + get_position(white_king_moves[i].row, white_king_moves[i].col) + ", ");
+						//cout << "3. White King " + get_position(white_king_moves[i].row, white_king_moves[i].col);
+						//is_check_and_mate();
+						//m_chess_table->draw();
+					}
+					m_chess_table->empty_cell(m_white_king->get_row(), m_white_king->get_col());
+					m_white_king->set_row(saved_row);
+					m_white_king->set_col(saved_col);
+					m_chess_table->set_figure(m_white_king, saved_row, saved_col);
+				}
+			}
+		}
+	}
+	m_chess_table->empty_cell(m_white_king->get_row(), m_white_king->get_col());
+	m_white_king->set_row(saved_row);
+	m_white_king->set_col(saved_col);
+	m_chess_table->set_figure(m_white_king, saved_row, saved_col);
+
+
+	saved_row = m_white_queen->get_row();
+	saved_col = m_white_queen->get_col();
+	for (int i = 0; i < white_queen_moves.size(); i++) {
+		move = m_white_queen->can_move(white_queen_moves[i].row, white_queen_moves[i].col);
+		if (move != no_way) {
+			if (m_chess_table->line_is_free(move, saved_row, saved_col, white_queen_moves[i].row, white_queen_moves[i].col)
+				&& m_chess_table->cell_is_available(saved_row, saved_col, white_queen_moves[i].row, white_queen_moves[i].col)) {
+				if (m_chess_table->set_figure(m_white_queen, white_queen_moves[i].row, white_queen_moves[i].col)) {
+					m_chess_table->empty_cell(saved_row, saved_col);
 					if (is_check_and_mate()) {
 						exists = true;
-						cout << "White Queen " + get_position(white_queen_moves[i].row, white_queen_moves[i].col);
+						m_twice_move_mate_combinations[m_twice_move_mate_combinations.size() - 1] += ("White Queen " + get_position(white_queen_moves[i].row, white_queen_moves[i].col) + ", ");
+						//cout << "3. White Queen " + get_position(white_queen_moves[i].row, white_queen_moves[i].col);
 						//is_check_and_mate();
 						//m_chess_table->draw();
 					}
@@ -210,7 +426,8 @@ void Chess::is_check_and_mate_after_whites_move() {
 					m_chess_table->empty_cell(saved_row, saved_col);
 					if (is_check_and_mate()) {
 						exists = true;
-						cout << "White Bishop " + get_position(white_bishop_moves[i].row, white_bishop_moves[i].col);
+						m_twice_move_mate_combinations[m_twice_move_mate_combinations.size() - 1] += ("White Bishop " + get_position(white_bishop_moves[i].row, white_bishop_moves[i].col) + ", ");
+						//cout << "3. White Bishop " + get_position(white_bishop_moves[i].row, white_bishop_moves[i].col);
 						//is_check_and_mate();
 						//m_chess_table->draw();
 					};
@@ -240,7 +457,8 @@ void Chess::is_check_and_mate_after_whites_move() {
 					m_chess_table->empty_cell(saved_row, saved_col);
 					if (is_check_and_mate()) {
 						exists = true;
-						cout << "White Knight " + get_position(white_knight_moves[i].row, white_knight_moves[i].col);
+						m_twice_move_mate_combinations[m_twice_move_mate_combinations.size() - 1] += ("White Knight " + get_position(white_knight_moves[i].row, white_knight_moves[i].col) + ", ");
+						//cout << "3. White Knight " + get_position(white_knight_moves[i].row, white_knight_moves[i].col);
 						//is_check_and_mate();
 						//m_chess_table->draw();
 					};
@@ -257,9 +475,12 @@ void Chess::is_check_and_mate_after_whites_move() {
 	m_white_knight->set_col(saved_col);
 	m_chess_table->set_figure(m_white_knight, saved_row, saved_col);
 
+
 	if (!exists) {
-		cout << "no move." << endl;
+		m_twice_move_mate_combinations.pop_back();
+		//cout << "no move." << endl;
 	}
+	return exists;
 }
 bool Chess::is_check() {
 	bool is_check = false;
@@ -343,7 +564,6 @@ void Chess::get_coordinates(string pos, int& row, int& col) {
 
 string Chess::get_position(int row, int col) {
 	string pos;
-	cout << pos << endl;
 
 	switch (col)
 	{

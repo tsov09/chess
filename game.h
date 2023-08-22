@@ -33,6 +33,7 @@ public:
 	Figure* m_white_queen;
 	Figure* m_white_bishop;
 	Figure* m_white_knight;
+	vector<string> m_twice_move_mate_combinations;
 	//int* m_rand_pos;
 	Chess();
 	Chess(const Chess&) = delete;
@@ -53,7 +54,8 @@ private:
 	void get_coordinates(string, int&, int&);
 	string get_position(int, int);
 	bool is_check_and_mate();
-	void is_check_and_mate_after_whites_move();
+	bool is_check_and_mate_after_whites_move();
+	void is_check_and_mate_after_whites_move_twice();
 	bool is_check();
 	bool is_mate();
 	bool is_possible_game();

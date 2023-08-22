@@ -25,6 +25,10 @@ void play_chess() {
 }
 
 int main() {
+	//for each (object var in collection_to_loop)
+	//{
+
+	//}
 	srand(time(0));
 	play_chess();
 	return 0;

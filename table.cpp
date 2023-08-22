@@ -163,6 +163,7 @@ bool Table::set_figure(Figure* figure, int row, int col) {
 		m_matrix[row][col] = figure->get_name();
 		figure->set_row(row);
 		figure->set_col(col);
+		figure->fill_moves_list();
 		return true;
 	}
 	else {
