@@ -14,6 +14,10 @@ string Figure::get_name() {
 	return m_name;
 }
 
+string Figure::get_full_name() {
+	return m_full_name;
+}
+
 bool Figure::is_valid_index(int x) {
 	if (x >= 0 && x < 8) {
 		return true;
@@ -59,9 +63,11 @@ int Figure::get_col() {
 King::King(string color) {
 	if (color == "white") {
 		m_name = Figure::generate_name("K", "_", "W");
+		m_full_name = "White King";
 	}
 	else if (color == "black") {
 		m_name = Figure::generate_name("K", "_", "B");
+		m_full_name = "Black King";
 	}
 	else {
 		cout << "Enter white or black." << endl;
@@ -163,9 +169,11 @@ Queen::~Queen() {};
 Queen::Queen(string color) {
 	if (color == "white") {
 		m_name = Figure::generate_name("Q", "_", "W");
+		m_full_name = "White Queen";
 	}
 	else if (color == "black") {
 		m_name = Figure::generate_name("Q", "_", "B");
+		m_full_name = "Black Queen";
 	}
 	else {
 		cout << "Enter white or black." << endl;
@@ -287,9 +295,11 @@ Bishop::~Bishop() {};
 Bishop::Bishop(string color) {
 	if (color == "white") {
 		m_name = Figure::generate_name("B", "_", "W");
+		m_full_name = "White Bishop";
 	}
 	else if (color == "black") {
 		m_name = Figure::generate_name("B", "_", "B");
+		m_full_name = "Black Bishop";
 	}
 	else {
 		cout << "Enter white or black." << endl;
@@ -372,9 +382,11 @@ Knight::~Knight() {};
 Knight::Knight(string color) {
 	if (color == "white") {
 		m_name = Figure::generate_name("N", "_", "W");
+		m_full_name = "White Knight";
 	}
 	else if (color == "black") {
 		m_name = Figure::generate_name("N", "_", "B");
+		m_full_name = "Black Knight";
 	}
 	else {
 		cout << "Enter white or black." << endl;

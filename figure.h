@@ -32,6 +32,7 @@ enum Moving_Type {
 class Figure {
 protected:
 	string m_name;
+	string m_full_name;
 	string m_color;
 	int m_row;
 	int m_col;
@@ -46,6 +47,7 @@ public:
 	virtual ~Figure();
 	static string generate_name(string, string, string);
 	string get_name();
+	string get_full_name();
 	virtual Moving_Type can_move(int, int);
 	bool is_valid_index(int);
 	void set_row(int);

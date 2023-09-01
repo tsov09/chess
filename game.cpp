@@ -160,7 +160,7 @@ void Chess::is_check_and_mate_after_whites_move_twice() {
 										m_chess_table->set_figure(m_black_king, black_king_moves[g].row, black_king_moves[g].col);
 										if (is_possible_game()) {
 											if (!is_check()) {
-												m_twice_move_mate_combinations.push_back(figure->get_name() + " " + get_position(figure_moves[i].row, figure_moves[i].col) + "\n" + "K_B " + get_position(black_king_moves[g].row, black_king_moves[g].col) + "\n");
+												m_twice_move_mate_combinations.push_back(figure->get_full_name() + " " + get_position(figure_moves[i].row, figure_moves[i].col) + "\n" + "Black King " + get_position(black_king_moves[g].row, black_king_moves[g].col) + "\n");
 												is_check_and_mate_after_whites_move();
 												/*if (is_check_and_mate_after_whites_move()) {
 													cout << "1. White King " + get_position(white_king_moves[i].row, white_king_moves[i].col);
@@ -235,7 +235,7 @@ bool Chess::is_check_and_mate_after_whites_move() {
 						m_chess_table->empty_cell(saved_row, saved_col);
 						if (is_check_and_mate()) {
 							exists = true;
-							m_twice_move_mate_combinations[m_twice_move_mate_combinations.size() - 1] += (figure->get_name() + " " + get_position(figure_moves[i].row, figure_moves[i].col) + ", ");
+							m_twice_move_mate_combinations[m_twice_move_mate_combinations.size() - 1] += (figure->get_full_name() + " " + get_position(figure_moves[i].row, figure_moves[i].col) + ", ");
 							//cout << "3. White King " + get_position(white_king_moves[i].row, white_king_moves[i].col);
 						}
 						m_chess_table->empty_cell(figure->get_row(), figure->get_col());
