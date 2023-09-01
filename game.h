@@ -27,7 +27,7 @@ class Chess : public Game{
 public:
 	Table* m_chess_table;
 	int m_figures_count;
-	Figure** m_figures;
+	vector<Figure*> m_figures;
 	Figure* m_black_king;
 	Figure* m_white_king;
 	Figure* m_white_queen;

@@ -120,9 +120,6 @@ bool Table::line_is_free(Moving_Type type, int row_current, int col_current, int
 		break;
 	}
 
-	/*if (is_free) {
-	}*/
-
 	return is_free;
 
 }
@@ -158,18 +155,20 @@ void Table::draw() {
 	cout << endl;
 }
 
+//bool isn't correct
 bool Table::set_figure(Figure* figure, int row, int col) {
-	if (m_matrix[row][col] == "   " || m_matrix[row][col] == "###") {
-		m_matrix[row][col] = figure->get_name();
-		figure->set_row(row);
-		figure->set_col(col);
-		figure->fill_moves_list();
-		return true;
-	}
-	else {
-		//cout << "Position for " << figure->get_name() << " and " << m_matrix[row][col] << " are similar." << endl;
-		return false;
-	}
+	m_matrix[row][col] = figure->get_name();
+	figure->set_row(row);
+	figure->set_col(col);
+	figure->fill_moves_list();
+	return true;
+	
+	//if (m_matrix[row][col] == "   " || m_matrix[row][col] == "###") {
+	//}
+	//else {
+	//	//cout << "Position for " << figure->get_name() << " and " << m_matrix[row][col] << " are similar." << endl;
+	//	return false;
+	//}
 }
 
 void Table::empty_cell(int row, int col) {
@@ -179,4 +178,9 @@ void Table::empty_cell(int row, int col) {
 	else {
 		m_matrix[row][col] = "   ";
 	}
+}
+
+string Table::get_cell(int row, int col) {
+	//check if indexes are correct
+	return m_matrix[row][col];
 }
