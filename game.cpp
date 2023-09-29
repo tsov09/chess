@@ -9,6 +9,7 @@ bool Chess::is_valid_ind(int x) {
 	}
 	else {
 		return false;
+
 	}
 }
 
@@ -65,6 +66,11 @@ void Chess::set_figure(string figure_name, string position) {
 		}
 	}
 	else {
+		for (int i = 0; i < m_figures.size(); i++) {
+			if (m_figures[i]->get_full_name() == figure_name) {
+				m_figures.erase(m_figures.begin() + i);
+			}
+		}
 		cout << endl << "Invalid position for " << figure_name << "!" << endl;
 	}
 }
